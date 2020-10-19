@@ -98,7 +98,6 @@ class Puppet::Provider::ElasticPlugin < Puppet::Provider
   end
 
   # Install this plugin on the host.
-  # rubocop:disable Metrics/CyclomaticComplexity
   def create
     commands = []
     commands += proxy_args(@resource[:proxy]) if @resource[:proxy]
@@ -121,7 +120,6 @@ class Puppet::Provider::ElasticPlugin < Puppet::Provider
       raise "Failed to install plugin. Received error: #{e.inspect}"
     end
   end
-  # rubocop:enable Metrics/CyclomaticComplexity
 
   # Remove this plugin from the host.
   def destroy
