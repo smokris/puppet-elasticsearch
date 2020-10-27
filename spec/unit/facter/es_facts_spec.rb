@@ -43,10 +43,10 @@ describe 'elasticsearch facts' do
     require 'lib/facter/es_facts'
   end
 
-  describe 'elasticsearch_ports' do
-    it 'finds listening ports' do
-      expect(Facter.fact(:elasticsearch_ports).value.split(','))
-        .to contain_exactly('9200')
+  describe 'elasticsearch_port' do
+    it 'finds listening port' do
+      expect(Facter.fact(:elasticsearch_port).value)
+        .to eq('9200')
     end
   end
 
