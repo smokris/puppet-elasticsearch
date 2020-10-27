@@ -15,9 +15,7 @@ module EsFacts
 
   def self.ssl?(config)
     tls_keys = [
-      'xpack.security.http.ssl.enabled',
-      'shield.http.ssl',
-      'searchguard.ssl.http.enabled'
+      'xpack.security.http.ssl.enabled'
     ]
 
     tls_keys.any? { |key| (config.key? key) && (config[key] == true) }
@@ -56,14 +54,10 @@ module EsFacts
     # only when the directory exists we need to process the stuff
     return unless File.directory?(dir_prefix)
 
-    Dir.foreach(dir_prefix) do |dir|
-      next if dir == '.'
-
-      if File.readable?("#{dir_prefix}/#{dir}/elasticsearch.yml")
-        config_data = YAML.load_file("#{dir_prefix}/#{dir}/elasticsearch.yml")
-        httpport = get_httpport(config_data)
-        httpports.merge! httpport if httpport
-      end
+    if File.readable?("#{dir_prefix}/elasticsearch.yml")
+      config_data = YAML.load_file("#{dir_prefix}/elasticsearch.yml")
+      httpport = get_httpport(config_data)
+      httpports.merge! httpport if httpport
     end
 
     begin
@@ -74,7 +68,8 @@ module EsFacts
         httpports.each_pair do |httpport, ssl|
           next if ssl
 
-          key_prefix = "elasticsearch_#{httpport}"
+          key_prefix = 'elasticsearch'
+          # key_prefix = "elasticsearch_#{httpport}"
 
           uri = URI("http://localhost:#{httpport}")
           http = Net::HTTP.new(uri.host, uri.port)
