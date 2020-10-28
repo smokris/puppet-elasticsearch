@@ -136,7 +136,10 @@ class Puppet::Provider::ElasticPlugin < Puppet::Provider
     }
     saved_vars = {}
 
-    unless @resource[:java_home].nil? or @resource[:java_home] == ''
+    # Use 'java_home' param if supplied, otherwise default to Elasticsearch shipped JDK
+    if @resource[:java_home].nil? or @resource[:java_home] == ''
+      env_vars['JAVA_HOME'] = "#{homedir}/jdk"
+    else
       env_vars['JAVA_HOME'] = @resource[:java_home]
     end
 
