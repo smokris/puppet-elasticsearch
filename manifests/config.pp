@@ -106,11 +106,6 @@ class elasticsearch::config {
         enable   => 'mask',
         provider => $elasticsearch::service_provider,
       }
-    } else {
-      service { 'elasticsearch':
-        ensure => false,
-        enable => false,
-      }
     }
 
     if $elasticsearch::defaults_location {
